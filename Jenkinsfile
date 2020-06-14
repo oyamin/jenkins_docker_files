@@ -164,52 +164,52 @@ node {
 
         echo "version $vers"
 
-        stage('docker pull') {  // Stage 1. pulling docker container or another artifact
-            out=sh(returnStdout: true, script: "docker pull busybox:latest")
-            echo "${out}"
-        }
+        // stage('docker pull') {  // Stage 1. pulling docker container or another artifact
+        //     out=sh(returnStdout: true, script: "docker pull busybox:latest")
+        //     echo "${out}"
+        // }
 
-        if ( scmVars.GIT_BRANCH != 'master' ) {
-            stage('unit testing 1'){ //testing when branch is not master
-                out=sh(returnStdout: true, script: "echo 'unit testing 1'")
-                echo "${out}"
-            }
-        }
+        // if ( scmVars.GIT_BRANCH != 'master' ) {
+        //     stage('unit testing 1'){ //testing when branch is not master
+        //         out=sh(returnStdout: true, script: "echo 'unit testing 1'")
+        //         echo "${out}"
+        //     }
+        // }
 
-        if ( scmVars.GIT_BRANCH == 'master' ) {
-            stage('unit testing 2'){ //testing when branch is not master
-                out=sh(returnStdout: true, script: "echo 'unit testing 2'")
-                echo "${out}"
-            }
-        }
-        stage('Updating version'){
-            update=sh (returnStdout: true, script: "aws ssm put-parameter \
-            --name devops.jenkins.eng.versions.$appName \
-            --value $vers \
-            --overwrite \
-            --type String \
-            --region us-west-2" )
-            echo "update: $update"
-        }
-        stage('tagging and pushing docker'){
-            br = branchMap[scmVars.GIT_BRANCH]? branchMap[scmVars.GIT_BRANCH]:scmVars.GIT_BRANCH
-            sh("docker tag busybox:latest $docker_registry$docker_prefix/$appName:v_$vers")
-            sh("docker tag busybox:latest $docker_registry$docker_prefix/$appName:$datetimeutc")
-            sh("docker tag busybox:latest $docker_registry$docker_prefix/$appName:$br")
-            sh("docker tag busybox:latest $docker_registry$docker_prefix/$appName:build_${BUILD_NUMBER}")
-            sh("docker push $docker_registry$docker_prefix/$appName")
-        }
+        // if ( scmVars.GIT_BRANCH == 'master' ) {
+        //     stage('unit testing 2'){ //testing when branch is not master
+        //         out=sh(returnStdout: true, script: "echo 'unit testing 2'")
+        //         echo "${out}"
+        //     }
+        // }
+        // stage('Updating version'){
+        //     update=sh (returnStdout: true, script: "aws ssm put-parameter \
+        //     --name devops.jenkins.eng.versions.$appName \
+        //     --value $vers \
+        //     --overwrite \
+        //     --type String \
+        //     --region us-west-2" )
+        //     echo "update: $update"
+        // }
+        // stage('tagging and pushing docker'){
+        //     br = branchMap[scmVars.GIT_BRANCH]? branchMap[scmVars.GIT_BRANCH]:scmVars.GIT_BRANCH
+        //     sh("docker tag busybox:latest $docker_registry$docker_prefix/$appName:v_$vers")
+        //     sh("docker tag busybox:latest $docker_registry$docker_prefix/$appName:$datetimeutc")
+        //     sh("docker tag busybox:latest $docker_registry$docker_prefix/$appName:$br")
+        //     sh("docker tag busybox:latest $docker_registry$docker_prefix/$appName:build_${BUILD_NUMBER}")
+        //     sh("docker push $docker_registry$docker_prefix/$appName")
+        // }
 
-        stage('tagging github'){
-            withCredentials([string(credentialsId: 'GitHub-jenkins.eng-token', variable: 'GITHUB_TOKEN')]) {
-                sh("git config credential.helper '!f() { echo username=\"sa-ta-jenkins-prod\"; echo \"password=$GITHUB_TOKEN\"; };f'")
-                sh("git pull --tag -f")
-                updateGhTag("$datetimeutc",          "Passed jenkins.eng job $repoName by build ${BUILD_NUMBER}")
-                updateGhTag("build_${BUILD_NUMBER}", "Passed jenkins.eng job $repoName by build ${BUILD_NUMBER}")
-                updateGhTag("v_$vers",               "Passed jenkins.eng job $repoName by build ${BUILD_NUMBER}")
-                sh("git push --tags")
-            }
-        }
+        // stage('tagging github'){
+        //     withCredentials([string(credentialsId: 'GitHub-jenkins.eng-token', variable: 'GITHUB_TOKEN')]) {
+        //         sh("git config credential.helper '!f() { echo username=\"sa-ta-jenkins-prod\"; echo \"password=$GITHUB_TOKEN\"; };f'")
+        //         sh("git pull --tag -f")
+        //         updateGhTag("$datetimeutc",          "Passed jenkins.eng job $repoName by build ${BUILD_NUMBER}")
+        //         updateGhTag("build_${BUILD_NUMBER}", "Passed jenkins.eng job $repoName by build ${BUILD_NUMBER}")
+        //         updateGhTag("v_$vers",               "Passed jenkins.eng job $repoName by build ${BUILD_NUMBER}")
+        //         sh("git push --tags")
+        //     }
+        // }
         stage('tagging github 2'){
             tt = new gitTag("Passed jenkins.eng job $repoName by build ${BUILD_NUMBER}")
             tt.add("$datetimeutc")
