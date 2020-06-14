@@ -108,7 +108,7 @@ def vers      = ''                                                             /
 def version   = ''                                                             // Version variable
 def branchMap = ['stable': 'stable', 'qa':'qa' ]
 
-
+'''
 node ('SPOT-Worker-ENG') {
     def WORKDIR      = "${env.WORKSPACE}/${env.BUILD_NUMBER}"
     def JENKINS_USER = ""
@@ -344,3 +344,4 @@ node ('SPOT-Worker-ENG') {
 }
 
 
+'''
