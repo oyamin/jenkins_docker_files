@@ -45,36 +45,36 @@ class SemVer implements Serializable {
     }
 }
 
-// class gitTag implements Serializable {
-//     private _tags = []
-//     private String _message = ''
+class gitTag implements Serializable {
+    private _tags = []
+    private String _message = ''
 
-//     def steps
-//     gitTag(steps) {this.steps = steps}
+    def steps
+    gitTag(steps) {this.steps = steps}
 
-//     gitTag(String message) {
-//         _message = message
-//         steps.sh("git pull --tag -f")
-//     }
+    gitTag(String message) {
+        _message = message
+        steps.sh("git pull --tag -f")
+    }
 
-//     void add(String tag) {
-//         println "add $tag"
-//         _tags.push(tag)
-//         println _tags
-//     }
+    void add(String tag) {
+        println "add $tag"
+        _tags.push(tag)
+        println _tags
+    }
 
-//     void apply() {
-//         def k=''
-//         println "apply";
-//         while( _tags ) {
-//             k = _tags.pop()
-//             sh("(git tag -d $k || true) 2>/dev/null")
-//             sh("git tag -a $k -m \"$message\"")
-//             sh("git push origin :refs/tags/$tag ||true")
-//         }
-//         sh("git push --tags")
-//     }
-// }
+    void apply() {
+        def k=''
+        println "apply";
+        while( _tags ) {
+            k = _tags.pop()
+            sh("(git tag -d $k || true) 2>/dev/null")
+            sh("git tag -a $k -m \"$message\"")
+            sh("git push origin :refs/tags/$tag ||true")
+        }
+        sh("git push --tags")
+    }
+}
 
 
 def updateGhTag( tag, message ) {
@@ -210,13 +210,13 @@ node {
                 sh("git push --tags")
             }
         }
-        // stage('tagging github 2'){
-        //     tt = new gitTag("Passed jenkins.eng job $repoName by build ${BUILD_NUMBER}")
-        //     tt.add("$datetimeutc")
-        //     tt.add("build_${BUILD_NUMBER}")
-        //     tt.add("v_$vers")
-        //     tt.apply();
-        // }
+        stage('tagging github 2'){
+            tt = new gitTag("Passed jenkins.eng job $repoName by build ${BUILD_NUMBER}")
+            tt.add("$datetimeutc")
+            tt.add("build_${BUILD_NUMBER}")
+            tt.add("v_$vers")
+            tt.apply();
+        }
         // stage('tagging github 2'){
         //     withCredentials([
         //         usernamePassword(   credentialsId: 'sa-ta-jenkins-prod-token',
