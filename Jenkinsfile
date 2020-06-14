@@ -326,16 +326,16 @@ node {
         echo "${previousResult}"
 
         if ( currentResult == "SUCCESS" ) {
-            slackSend color: "good", channel: '#jenkins-alerts-devops', failOnError: false, teamDomain: 'trueaccord', tokenCredentialId: 'Slack', message: "Jenkins[Eng] - Job: ${env.JOB_NAME} with buildnumber ${env.BUILD_NUMBER} was successful"
+            // slackSend color: "good", channel: '#jenkins-alerts-devops', failOnError: false, teamDomain: 'trueaccord', tokenCredentialId: 'Slack', message: "Jenkins[Eng] - Job: ${env.JOB_NAME} with buildnumber ${env.BUILD_NUMBER} was successful"
         }
         else if( currentResult == "FAILURE" ) {
-            slackSend color: "danger", channel: '#jenkins-alerts-devops', failOnError: false, teamDomain: 'trueaccord', tokenCredentialId: 'Slack', message: "Jenkins[Eng] - @${author} Job: ${env.JOB_NAME} with buildnumber ${env.BUILD_NUMBER} was failed. <${env.BUILD_URL}|Log>"
+            // slackSend color: "danger", channel: '#jenkins-alerts-devops', failOnError: false, teamDomain: 'trueaccord', tokenCredentialId: 'Slack', message: "Jenkins[Eng] - @${author} Job: ${env.JOB_NAME} with buildnumber ${env.BUILD_NUMBER} was failed. <${env.BUILD_URL}|Log>"
         }
         else if( currentResult == "UNSTABLE" ) {
-            slackSend color: "warning", channel: '#jenkins-alerts-devops', failOnError: false, teamDomain: 'trueaccord', tokenCredentialId: 'Slack', message: "Jenkins[Eng] - @${author} Job: ${env.JOB_NAME} with buildnumber ${env.BUILD_NUMBER} was unstable. <${env.BUILD_URL}|Log>"
+            // slackSend color: "warning", channel: '#jenkins-alerts-devops', failOnError: false, teamDomain: 'trueaccord', tokenCredentialId: 'Slack', message: "Jenkins[Eng] - @${author} Job: ${env.JOB_NAME} with buildnumber ${env.BUILD_NUMBER} was unstable. <${env.BUILD_URL}|Log>"
         }
         else {
-            slackSend color: "danger", channel: '#jenkins-alerts-devops', failOnError: false, teamDomain: 'trueaccord', tokenCredentialId: 'Slack', message: "Jenkins[Eng] - @${author} Job: ${env.JOB_NAME} with buildnumber ${env.BUILD_NUMBER} its result was unclear;"
+            // slackSend color: "danger", channel: '#jenkins-alerts-devops', failOnError: false, teamDomain: 'trueaccord', tokenCredentialId: 'Slack', message: "Jenkins[Eng] - @${author} Job: ${env.JOB_NAME} with buildnumber ${env.BUILD_NUMBER} its result was unclear;"
         }
 
         //cleaning up after build.
