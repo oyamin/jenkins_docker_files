@@ -109,7 +109,7 @@ def version   = ''                                                             /
 def branchMap = ['stable': 'stable', 'qa':'qa' ]
 
 
-node {
+node  {
     def WORKDIR = "${env.WORKSPACE}/${env.BUILD_NUMBER}"
     def JENKINS_USER = ""
     currentBuild.result = 'SUCCESS'
